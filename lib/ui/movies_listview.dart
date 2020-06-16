@@ -1,21 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_movies_app/ui/movie_details.dart';
+import 'package:flutter_movies_app/models/movie.dart';
 
 class MoviesListView extends StatelessWidget {
-  final List movies = [
-    "Titanic",
-    "I am legend",
-    "Pursuit of Happiness",
-    "Avengers",
-    "Captain America",
-    "Iron Man",
-    "Thor",
-    "Batman",
-    "Spiderman",
-    "Venom",
-    "300",
-    "Nujum Pak Belalang",
-  ];
+  final List<Movie> movieList = Movie.getMovies();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +15,7 @@ class MoviesListView extends StatelessWidget {
       ),
       backgroundColor: Colors.amber.shade200,
       body: ListView.builder(
-        itemCount: movies.length,
+        itemCount: movieList.length,
         itemBuilder: (BuildContext context, int index) {
           return Card(
             color: Colors.white,
@@ -35,18 +23,28 @@ class MoviesListView extends StatelessWidget {
             child: ListTile(
               leading: CircleAvatar(
                 child: Container(
-                  child: Text('Test'),
+                  width: 200,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    image: DecorationImage(
+                      image: NetworkImage(movieList[index].images[0]),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: null,
                 ),
               ),
-              title: Text(movies[index]),
-              subtitle: Text(movies[index]),
+              title: Text(movieList[index].title),
+              subtitle: Text(movieList[index].genre),
               trailing: Text('...'),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => MovieDetails(
-                      movieName: movies.elementAt(index),
+                      movieName: movieList[index].title,
+                      movie: movieList[index],
                     ),
                   ),
                 );
