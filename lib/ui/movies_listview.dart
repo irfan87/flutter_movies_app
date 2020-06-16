@@ -13,45 +13,110 @@ class MoviesListView extends StatelessWidget {
         backgroundColor: Colors.amber.shade600,
         centerTitle: true,
       ),
-      backgroundColor: Colors.amber.shade200,
+      backgroundColor: Colors.amber.shade300,
       body: ListView.builder(
         itemCount: movieList.length,
         itemBuilder: (BuildContext context, int index) {
-          return Card(
-            color: Colors.white,
-            elevation: 4.5,
-            child: ListTile(
-              leading: CircleAvatar(
-                child: Container(
-                  width: 200,
-                  height: 200,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.0),
-                    image: DecorationImage(
-                      image: NetworkImage(movieList[index].images[0]),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: null,
-                ),
+          return Stack(
+            children: <Widget>[
+              movieCard(movieList[index], context),
+              Positioned(
+                top: 10.0,
+                left: 4.0,
+                child: movieImage(movieList[index].images[0]),
               ),
-              title: Text(movieList[index].title),
-              subtitle: Text(movieList[index].genre),
-              trailing: Text('...'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MovieDetails(
-                      movieName: movieList[index].title,
-                      movie: movieList[index],
-                    ),
-                  ),
-                );
-              },
-            ),
+            ],
           );
         },
+      ),
+    );
+  }
+
+  Widget movieCard(Movie movie, BuildContext context) {
+    return InkWell(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MovieDetails(
+            movieName: movie.title,
+            movie: movie,
+          ),
+        ),
+      ),
+      child: Container(
+        margin: EdgeInsets.only(left: 60.0),
+        width: MediaQuery.of(context).size.width,
+        height: 121.0,
+        child: Card(
+          color: Colors.amber.shade100,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 44.0),
+            child: Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Flexible(
+                        child: Text(
+                          movie.title,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17.0,
+                          ),
+                        ),
+                      ),
+                      Text(movie.rated),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                        child: Text(
+                          'IMDB Rating: ${movie.imdbRating} / 10',
+                          style: mainTextStyle(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text('Released: ${movie.released}'),
+                      Text(movie.runtime),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  TextStyle mainTextStyle() {
+    return TextStyle(
+      fontSize: 15.0,
+      color: Colors.green,
+    );
+  }
+
+  Widget movieImage(String imageURL) {
+    return Container(
+      width: 100,
+      height: 100,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        image: DecorationImage(
+          image: NetworkImage(imageURL ?? Icon(Icons.help)),
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }
