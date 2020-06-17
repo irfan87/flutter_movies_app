@@ -18,7 +18,7 @@ class MovieDetailsThumbnail extends StatelessWidget {
           children: <Widget>[
             Container(
               width: MediaQuery.of(context).size.width,
-              height: 190,
+              height: 170,
               decoration: BoxDecoration(
                   image: DecorationImage(
                 image: NetworkImage(thumbnail),
