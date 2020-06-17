@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_movies_app/models/movie.dart';
-import 'package:flutter_movies_app/ui/movies_listview.dart';
+import 'package:flutter_movies_app/ui/movie_details_thumbnail.dart';
+import 'package:flutter_movies_app/ui/movie_details_header_with_poster.dart';
 
 class MovieDetails extends StatelessWidget {
   final String movieName;
@@ -17,23 +18,15 @@ class MovieDetails extends StatelessWidget {
         backgroundColor: Colors.amber.shade600,
         centerTitle: true,
       ),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Text(this.movie.title),
-            Center(
-              child: RaisedButton(
-                child: Text('Go Back'),
-                onPressed: () => Navigator.pop(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MoviesListView(),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+      body: ListView(
+        children: <Widget>[
+          MovieDetailsThumbnail(
+            thumbnail: movie.images[0],
+          ),
+          MovieDetailsHeaderWithPoster(
+            movie: movie,
+          ),
+        ],
       ),
     );
   }
